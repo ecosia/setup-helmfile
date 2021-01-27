@@ -36,6 +36,7 @@ jobs:
 - `install-kubectl` : Install kubectl. Default `yes`
 - `install-helm` : Install Helm. Default `yes`
 - `install-helm-plugins` : Install Helm plugins. Default `yes`
+- `install-wrapper` : Install Helmfile wrapper. Default `yes`
 
 > See "[Installing kubectl - Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html)" for information how to specify the kubectl version.
 
@@ -81,6 +82,30 @@ jobs:
       uses: mamezou-tech/setup-helmfile@v0.7.0
       with:
         install-helm-plugins: no
+```
+
+The wrapper script installation can be skipped.
+
+```yaml
+steps:
+- uses: mamezou-tech/setup-helmfile@v0.7.0
+  with:
+    install-wrapper: false
+```
+
+Subsequent steps can access outputs when the wrapper script is installed.
+
+
+```yaml
+steps:
+- uses: mamezou-tech/setup-helmfile@v0.7.0
+
+- id: diff
+  run: helmfile --no-color diff
+
+- run: echo ${{ steps.diff.outputs.stdout }}
+- run: echo ${{ steps.diff.outputs.stderr }}
+- run: echo ${{ steps.diff.outputs.exitcode }}
 ```
 
 ### Build action (for maintainer)
