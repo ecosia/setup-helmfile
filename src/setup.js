@@ -19,7 +19,9 @@ async function installHelm(version) {
 }
 
 async function installHelmPlugins() {
-  await exec.exec("helm plugin install https://github.com/databus23/helm-diff --version master");
+  // Workaround for https://github.com/databus23/helm-diff/issues/322
+  const helmDiffVersion = "3.1.3";
+  await exec.exec(`helm plugin install https://github.com/databus23/helm-diff --version "${helmDiffVersion}"`);
   await exec.exec("helm plugin install https://github.com/hypnoglow/helm-s3.git");
 }
 
