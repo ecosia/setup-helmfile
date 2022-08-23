@@ -4603,8 +4603,12 @@ async function installHelm(version) {
 }
 
 async function installHelmPlugins() {
-  await exec.exec("helm plugin install https://github.com/databus23/helm-diff --version master");
-  await exec.exec("helm plugin install https://github.com/hypnoglow/helm-s3.git");
+  // Workaround for https://github.com/databus23/helm-diff/issues/322
+  const helmDiffVersion = "3.1.3";
+  // Workaround for https://github.com/hypnoglow/helm-s3/issues/203
+  const helmS3Version = "v0.13.0";
+  await exec.exec(`helm plugin install https://github.com/databus23/helm-diff --version "${helmDiffVersion}"`);
+  await exec.exec(`helm plugin install https://github.com/hypnoglow/helm-s3.git --version "${helmS3Version}"`);
 }
 
 async function installHelmfile(version) {
